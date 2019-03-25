@@ -15,9 +15,9 @@ public class Console_NonOOP_2players
     public static final int O_win = 3;
     
     //board game
-    public static final int ROW = 10;
-    public static final int COL = 10;
-    public static int[][] board = new int[ROW][COL];
+    public static int ROW=3;
+    public static int COL=3;
+    public static int[][] board;
     
     public static int currentState; //trang thai hien tai cua game (PLAYING, DRAW, X_win, O_win)
     public static int currentPlayer; //nguoi choi hien tai (X, O)
@@ -27,7 +27,14 @@ public class Console_NonOOP_2players
     
     public static void main(String[] args) 
     {
+        System.out.println("Enter the board size: ");
+        System.out.print("Row size(3<=row<=100): ");
+        ROW = scanner.nextInt();
+        System.out.print("Col size(3<=col<=100): ");
+        COL = scanner.nextInt();
+        board = new int[ROW][COL];
         initGame();
+        printBoard();
         do{
             playerMove(currentPlayer); //update currentRow va currentCol
             updateGame(); //update currentState
@@ -90,7 +97,7 @@ public class Console_NonOOP_2players
                 System.out.println("Player O, enter your move (row/col): ");
             int r = scanner.nextInt() - 1;
             int c = scanner.nextInt() - 1;
-            if(r>=0 && r<ROW && c>=0 && c<COL)
+            if(r>=0 && r<ROW && c>=0 && c<COL && board[r][c]==Empty)
             {
                 currentRow = r;
                 currentCol = c;
@@ -122,6 +129,20 @@ public class Console_NonOOP_2players
         if(r>=0 && r<=(ROW-3) && board[r][c]==board[r+1][c] && board[r][c]==board[r+2][c])
             return true;
         if(r>=2 && r<=(ROW-1) && board[r][c]==board[r-1][c] && board[r][c]==board[r-2][c])
+            return true;
+        //thang theo duong cheo 1
+        if(r<=(ROW-3) && c<=(COL-3) && board[r][c]==board[r+1][c+1] && board[r][c]==board[r+2][c+2])
+            return true;
+        if(r>=1 && c>=1 && r<=(ROW-2) && c<=(COL-2) && board[r][c]==board[r-1][c-1] && board[r][c]==board[r+1][c+1])
+            return true;
+        if(r>=2 && c>=2 && board[r][c]==board[r-1][c-1] && board[r][c]==board[r-2][c-2])
+            return true;
+        //thang theo duong cheo 2
+        if(c>=2 && r<=(ROW-3) && board[r][c]==board[r+1][c-1] && board[r][c]==board[r+2][c-2])
+            return true;
+        if(c<=(COL-2) && r>=1 && c>=1 && r<=(ROW-2)&& board[r][c]==board[r-1][c+1] && board[r][c]==board[r+1][c-1])
+            return true;
+        if(c<=(COL-3) && r>=2 && board[r][c]==board[r-1][c+1] && board[r][c]==board[r-2][c+2])
             return true;
         return false;
     }
