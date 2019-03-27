@@ -27,28 +27,38 @@ public class Console_NonOOP_2players
     
     public static void main(String[] args) 
     {
-        System.out.println("Enter the board size: ");
-        System.out.print("Row size(3<=row<=100): ");
-        ROW = scanner.nextInt();
-        System.out.print("Col size(3<=col<=100): ");
-        COL = scanner.nextInt();
-        board = new int[ROW][COL];
-        initGame();
-        printBoard();
-        do{
-            playerMove(currentPlayer); //update currentRow va currentCol
-            updateGame(); //update currentState
+        do
+        {
+            System.out.println("Enter the board size: ");
+            System.out.print("Row size(3<=row<=100): ");
+            ROW = scanner.nextInt();
+            System.out.print("Col size(3<=col<=100): ");
+            COL = scanner.nextInt();
+            board = new int[ROW][COL];
+            initGame();
             printBoard();
-            //print message neu game over
-            if(currentState==X_win)
-                System.out.println("Player X win, game over");
-            else if(currentState==O_win)
-                System.out.println("Player O win, game over");
-            else if(currentState==DRAW)
-                System.out.println("Players are win-win, game over");
-            //doi luot choi
-            currentPlayer = (currentPlayer==X)?O:X;
-        }while(currentState==PLAYING);
+            do{
+                playerMove(currentPlayer); //update currentRow va currentCol
+                updateGame(); //update currentState
+                printBoard();
+                //print message neu game over
+                if(currentState==X_win)
+                    System.out.println("Player X win, game over");
+                else if(currentState==O_win)
+                    System.out.println("Player O win, game over");
+                else if(currentState==DRAW)
+                    System.out.println("It's a draw game, game over");
+                //doi luot choi
+                currentPlayer = (currentPlayer==X)?O:X;
+            }while(currentState==PLAYING);
+            System.out.print("Play again(y|n): ");
+            String q_string = scanner.next();
+            char q = q_string.charAt(0);
+            if((q_string.length()>1)||(q!='Y'&&q!='y'))
+                System.exit(0);
+            else
+                System.out.println("\nNew game");
+        }while(true);
     }
     public static void initGame()
     {
@@ -65,12 +75,7 @@ public class Console_NonOOP_2players
         {
             for(int j=0; j<COL; j++)
             {
-                if(board[i][j]==Empty)
-                    System.out.print(" ");
-                else if(board[i][j]==X)
-                    System.out.print("X");
-                else
-                    System.out.print("O");
+                printCell(board[i][j]);
                 if(j<COL-1)
                     System.out.print("|");
                 else
@@ -82,16 +87,24 @@ public class Console_NonOOP_2players
                     System.out.print("__");
             }
             System.out.print("\n");
-        }
-                
+        }          
+    }
+    public static void printCell(int content)
+    {
+        if(content==Empty)
+            System.out.print(" ");
+        else if(content==X)
+            System.out.print("X");
+        else
+            System.out.print("O");
     }
     //nguoi choi di mot nuoc cell(X, O)
-    public static void playerMove(int cell)
+    public static void playerMove(int currentPlayer)
     {
         int validMove=0;
         do
         {
-            if(cell == X)
+            if(currentPlayer == X)
                 System.out.println("Player X, enter your move (row/col): ");
             else
                 System.out.println("Player O, enter your move (row/col): ");
@@ -101,7 +114,7 @@ public class Console_NonOOP_2players
             {
                 currentRow = r;
                 currentCol = c;
-                board[currentRow][currentCol] = cell;
+                board[currentRow][currentCol] = currentPlayer;
                 validMove = 1;
             }
             else
